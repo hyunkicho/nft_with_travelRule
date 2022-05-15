@@ -16,7 +16,7 @@ contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
 
 
     modifier onlyRegisterd() {
-        require(isRegistred(msg.sender) == true, "Mapping: caller must be a registered bridge contract address");
+        require(isRegistered(msg.sender) == true, "Mapping: caller must be a registered bridge contract address");
         _;
     }
 
@@ -32,7 +32,7 @@ contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
         return travelRuleServiceData[_contractAddress][_tokenID][_travelRuleSolutionAddress];
     }
 
-    function isRegistred (address _address) public view returns(bool) {
+    function isRegistered (address _address) public view returns(bool) {
         return travelRuleRegistry[_address];
     }
 }
