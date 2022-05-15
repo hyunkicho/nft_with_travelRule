@@ -38,9 +38,13 @@ abstract contract ERC721TravelRuleExtension is ERC721URIStorage {
         uint256 tokenId
     ) internal virtual override {
         super._beforeTokenTransfer(from, to, tokenId);
-
-        require(!TravelRuleManager(travelRuleManager).isRegistred(from), "ERC721TravelRule: token transfer from non registerd");
-        require(!TravelRuleManager(travelRuleManager).isRegistred(to), "ERC721TravelRule: token transfer to non registerd");
+        //onlyUsers who get registerd can send NFT
+        if(from != address(0x0)) {
+            require(TravelRuleManager(travelRuleManager).isRegistered(from), "ERC721TravelRule: token transfer from non registerd");
+        }
+        if(to != address(0x0)) {
+            require(TravelRuleManager(travelRuleManager).isRegistered(to), "ERC721TravelRule: token transfer to non registerd");
+        }
     }
 
     function _afterTokenTransfer(
