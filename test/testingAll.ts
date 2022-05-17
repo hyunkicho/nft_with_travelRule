@@ -90,33 +90,141 @@ describe("Starting test with constants", async () => {
       })
     })
 
+    describe("[update from_vasp info]If travelRule service have on chian system it should contain updateInfromation", async () => {
+
+      it("register setTravelRuleServiceData to TravelRuleManager",async () => {
+        //user data
+        let userCode = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("A234324"));
+        let userType = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("LEGAL"));
+        let name = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("A234324"));
+        let nameID = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("LEGL"));
+        let user_address = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("Atlanta"));
+        let NationalIdentification = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("A23423"));
+        let datesAndPlacOfBirth = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("970130"));
+        await travelRuleSolutionExample_1.updateInfo(
+          from_vasp.address,
+          userCode,
+          userType,
+          name,
+          nameID,
+          user_address,
+          datesAndPlacOfBirth,
+          NationalIdentification
+        )
+      })
+
+      it("check travle rule service data", async () => {
+         const result = await travelRuleSolutionExample_1.UserInformation(from_vasp.address)
+         console.log("get from_vasp data >>>>>>>>>>>>>", result)
+      })
+    })
+
+    describe("[update to_vasp info]If travelRule service have on chian system it should contain updateInfromation", async () => {
+
+      it("register setTravelRuleServiceData to TravelRuleManager",async () => {
+        //user data
+        let userCode = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("AB34324"));
+        let userType = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("NATURAL"));
+        let name = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("kim yeon hee"));
+        let nameID = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("LEGL"));
+        let user_address = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("Gorgia"));
+        let NationalIdentification = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("234234-23432"));
+        let datesAndPlacOfBirth = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("938202"));
+        await travelRuleSolutionExample_2.updateInfo(
+          to_vasp.address,
+          userCode,
+          userType,
+          name,
+          nameID,
+          user_address,
+          datesAndPlacOfBirth,
+          NationalIdentification
+        )
+      })
+
+      it("check travle rule service data", async () => {
+         const result = await travelRuleSolutionExample_2.UserInformation(to_vasp.address)
+         console.log("get from_vasp data >>>>>>>>>>>>>", result)
+
+      })
+    })
+
 
     describe("Travel rule service could set Travel Rule Service Data if they want", async () => {
 
-      //user data
-      let userCode = await abiCoder.encode(["string"],["123A"]);
-      let userType = await abiCoder.encode(["string"],["NATURAL"]);
-      let name = await abiCoder.encode(["string"],["cho hyun ki"]);
-      let nameID = await abiCoder.encode(["string"],["LEGL"]);
-      let user_address = await abiCoder.encode(["string"],["950130"]);
-      let NationalIdentification = await abiCoder.encode(["string"],["1341324-13423532"])
-      let datesAndPlacOfBirth = await abiCoder.encode(["string"],["950130"])
-      let customerEncodedData = await abiCoder.encode(
-        ["string","string","string","string","string","string","string"],
-        [userCode,userType,name,nameID,user_address,datesAndPlacOfBirth,NationalIdentification]
-      )
-      let encodeDatakeccack = await ethers.utils.keccak256(customerEncodedData);
+      it("set data of fromVasp and toVasp", async () => {
+        
+      })
+
 
       it("register setTravelRuleServiceData to TravelRuleManager",async () => {
-      await travelRuleManager.connect(from_vasp).setTravelRuleServiceData(travelRuleNft.address,1,encodeDatakeccack);
-      await travelRuleManager.connect(to_vasp).setTravelRuleServiceData(travelRuleNft.address,1,encodeDatakeccack);
+        const from_vasp_info = await travelRuleSolutionExample_1.UserInformation(from_vasp.address);
+        //user data
+        let userCode = await from_vasp_info.userCode;
+        let userType = await  from_vasp_info.userType;
+        let name = await  from_vasp_info.name;
+        let nameID = await  from_vasp_info.nameID;
+        let user_address = await  from_vasp_info.user_address;
+        let NationalIdentification = await  from_vasp_info.NationalIdentification;
+        let datesAndPlacOfBirth = await  from_vasp_info.datesAndPlacOfBirth;
+        let customerEncodedData = await abiCoder.encode(
+          ["string","string","string","string","string","string","string"],
+          [userCode,userType,name,nameID,user_address,datesAndPlacOfBirth,NationalIdentification]
+        )
+        let encodeDatakeccack_from = await ethers.utils.keccak256(customerEncodedData);
+
+        const to_vasp_info = await travelRuleSolutionExample_2.UserInformation(from_vasp.address);
+        //user data
+        let userCode_to = await to_vasp_info.userCode;
+        let userType_to = await  to_vasp_info.userType;
+        let name_to = await  to_vasp_info.name;
+        let nameID_to = await  to_vasp_info.nameID;
+        let user_address_to = await  to_vasp_info.user_address;
+        let NationalIdentification_to = await  to_vasp_info.NationalIdentification;
+        let datesAndPlacOfBirth_to = await  to_vasp_info.datesAndPlacOfBirth;
+        let customerEncodedData_to = await abiCoder.encode(
+          ["string","string","string","string","string","string","string"],
+          [userCode_to,userType_to,name_to,nameID_to,user_address_to,datesAndPlacOfBirth_to,NationalIdentification_to]
+        )
+        let encodeDatakeccack_to = await ethers.utils.keccak256(customerEncodedData_to);
+      await travelRuleManager.connect(from_vasp).setTravelRuleServiceData(travelRuleNft.address,1,encodeDatakeccack_from);
+      await travelRuleManager.connect(to_vasp).setTravelRuleServiceData(travelRuleNft.address,1,encodeDatakeccack_to);
       })
 
       it("transfer NFT have to be done with event logs and pass the requirement state", async () => {
+        const from_vasp_info = await travelRuleSolutionExample_1.UserInformation(from_vasp.address);
+        //user data
+        let userCode = await from_vasp_info.userCode;
+        let userType = await  from_vasp_info.userType;
+        let name = await  from_vasp_info.name;
+        let nameID = await  from_vasp_info.nameID;
+        let user_address = await  from_vasp_info.user_address;
+        let NationalIdentification = await  from_vasp_info.NationalIdentification;
+        let datesAndPlacOfBirth = await  from_vasp_info.datesAndPlacOfBirth;
+        let customerEncodedData = await abiCoder.encode(
+          ["string","string","string","string","string","string","string"],
+          [userCode,userType,name,nameID,user_address,datesAndPlacOfBirth,NationalIdentification]
+        )
+        let encodeDatakeccack_from = await ethers.utils.keccak256(customerEncodedData);
+
+        const to_vasp_info = await travelRuleSolutionExample_2.UserInformation(from_vasp.address);
+        //user data
+        let userCode_to = await to_vasp_info.userCode;
+        let userType_to = await  to_vasp_info.userType;
+        let name_to = await  to_vasp_info.name;
+        let nameID_to = await  to_vasp_info.nameID;
+        let user_address_to = await  to_vasp_info.user_address;
+        let NationalIdentification_to = await  to_vasp_info.NationalIdentification;
+        let datesAndPlacOfBirth_to = await  to_vasp_info.datesAndPlacOfBirth;
+        let customerEncodedData_to = await abiCoder.encode(
+          ["string","string","string","string","string","string","string"],
+          [userCode_to,userType_to,name_to,nameID_to,user_address_to,datesAndPlacOfBirth_to,NationalIdentification_to]
+        )
+        let encodeDatakeccack_to = await ethers.utils.keccak256(customerEncodedData_to);
         console.log(await travelRuleManager.isRegistered(from_vasp.address))
         expect(await travelRuleNft.connect(from_vasp).transferFrom(from_vasp.address,to_vasp.address,1))
         .to.emit(travelRuleNft,"travelRuleLog")
-        .withArgs(encodeDatakeccack,encodeDatakeccack)
+        .withArgs(encodeDatakeccack_from,encodeDatakeccack_to)
         ;
       })
     })
