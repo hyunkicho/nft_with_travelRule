@@ -5,6 +5,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "./TravelRuleManager.sol";
+import "hardhat/console.sol";
+
 
 /**
  * @dev ERC721 token with travel Rule.
@@ -31,21 +33,6 @@ abstract contract ERC721TravelRuleExtension is ERC721URIStorage {
     function setTravelRuleManager(address _travelRuleManagerAddress) internal {
        travelRuleManager = _travelRuleManagerAddress;
     }
-     
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal virtual override {
-        super._beforeTokenTransfer(from, to, tokenId);
-        //onlyUsers who get registerd can send NFT
-        if(from != address(0x0)) {
-            require(TravelRuleManager(travelRuleManager).isRegistered(from), "ERC721TravelRule: token transfer from non registerd");
-        }
-        if(to != address(0x0)) {
-            require(TravelRuleManager(travelRuleManager).isRegistered(to), "ERC721TravelRule: token transfer to non registerd");
-        }
-    }
 
     function _afterTokenTransfer(
         address from,
@@ -53,7 +40,20 @@ abstract contract ERC721TravelRuleExtension is ERC721URIStorage {
         uint256 tokenId
     ) internal virtual override {
         super._afterTokenTransfer(from, to, tokenId);
-
-        emit travelRuleLog(TravelRuleManager(travelRuleManager).getTravelRuleServiceData(address(this),tokenId,from),TravelRuleManager(travelRuleManager).getTravelRuleServiceData(address(this),tokenId,to));
+        if(from != address(0x0)) {
+            if(to != address(0x0)) {
+                console.log("here0-0");
+                if(!TravelRuleManager(travelRuleManager).isRegisteredCustomer(from)) {
+                    console.log("here");
+                    if(TravelRuleManager(travelRuleManager).isRegisteredCustomer(to)) {
+                                            console.log("here2");
+                        emit travelRuleLog(
+                            TravelRuleManager(travelRuleManager).getTravelRuleServiceData(address(this),tokenId,from),
+                            TravelRuleManager(travelRuleManager).getTravelRuleServiceData(address(this),tokenId,to)
+                        );
+                    }
+                }
+            }
+        }
     }
 }

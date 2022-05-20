@@ -2,8 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
+import "hardhat/console.sol";
 
 contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
     mapping (address => mapping(uint256 => mapping(address => bytes32))) private travelRuleServiceData; 
@@ -13,15 +12,19 @@ contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
     //value is the value usued by TravelRuleSolution
 
     mapping (address => bool) private travelRuleRegistry; //address is TravelRuleSoultion Example
-
+    mapping (address => bool) private registerdCustomer;
 
     modifier onlyRegisterd() {
-        require(isRegistered(msg.sender) == true, "Mapping: caller must be a registered bridge contract address");
+        require(isRegistered(msg.sender) == true, "TravelRuleManager: caller must be a registered contract address");
         _;
     }
 
     function setTravelRuleServiceData (address _contractAddress,uint256 _tokenID, bytes32 _travelRuleServiceData) public onlyRegisterd {
         travelRuleServiceData[_contractAddress][_tokenID][msg.sender]=_travelRuleServiceData;
+    }
+
+    function setCustomer (address _address) public onlyRegisterd {
+        registerdCustomer[_address]=true;
     }
 
     function register (address _address) public onlyOwner {
@@ -34,6 +37,13 @@ contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
 
     function isRegistered (address _address) public view returns(bool) {
         return travelRuleRegistry[_address];
+    }
+
+    function isRegisteredCustomer (address _address) public view returns(bool) {
+        console.log(_address);
+                console.log(registerdCustomer[_address]);
+
+        return registerdCustomer[_address];
     }
 }
 
