@@ -23,7 +23,7 @@ abstract contract ERC721TravelRuleExtension is ERC721URIStorage {
 
     address private travelRuleManager;
 
-    event travelRuleLog (bytes32 travleRuleData_from, bytes32 travleRuleData_to);
+    event travelRuleLog (bytes travleRuleData_from ,bytes travleRuleData_to);
 
     constructor(address _travelRuleManager) 
     {
@@ -42,11 +42,8 @@ abstract contract ERC721TravelRuleExtension is ERC721URIStorage {
         super._afterTokenTransfer(from, to, tokenId);
         if(from != address(0x0)) {
             if(to != address(0x0)) {
-                console.log("here0-0");
-                if(!TravelRuleManager(travelRuleManager).isRegisteredCustomer(from)) {
-                    console.log("here");
+                if(TravelRuleManager(travelRuleManager).isRegisteredCustomer(from)) {
                     if(TravelRuleManager(travelRuleManager).isRegisteredCustomer(to)) {
-                                            console.log("here2");
                         emit travelRuleLog(
                             TravelRuleManager(travelRuleManager).getTravelRuleServiceData(address(this),tokenId,from),
                             TravelRuleManager(travelRuleManager).getTravelRuleServiceData(address(this),tokenId,to)

@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "hardhat/console.sol";
 
 contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
-    mapping (address => mapping(uint256 => mapping(address => bytes32))) private travelRuleServiceData; 
+    mapping (address => mapping(uint256 => mapping(address => bytes))) private travelRuleServiceData; 
     //1st address  is contract address
     //2nd uint256 is tokenId
     //3rd address is travelruleSolutionAddress
@@ -14,25 +14,43 @@ contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
     mapping (address => bool) private travelRuleRegistry; //address is TravelRuleSoultion Example
     mapping (address => bool) private registerdCustomer;
 
+    uint256 private txIndex;
+
     modifier onlyRegisterd() {
         require(isRegistered(msg.sender) == true, "TravelRuleManager: caller must be a registered contract address");
         _;
     }
 
-    function setTravelRuleServiceData (address _contractAddress,uint256 _tokenID, bytes32 _travelRuleServiceData) public onlyRegisterd {
-        travelRuleServiceData[_contractAddress][_tokenID][msg.sender]=_travelRuleServiceData;
+    function setTravelRuleServiceData (
+        address _contractAddress,
+        uint256 _tokenID,
+        address _customerAddress,
+        bytes32 _travelRuleServiceData,
+        string memory _vaspCode
+        ) public onlyRegisterd {
+        registerdCustomer[msg.sender] = true;
+        bytes memory encodedData = abi.encode(_travelRuleServiceData,_vaspCode);
+        travelRuleServiceData[_contractAddress][_tokenID][_customerAddress] = encodedData;
+    }
+
+    function decodeDataAndVaspCode (bytes memory _encodedData) public view returns(bytes32 _travelRuleServiceData,string memory _vaspCode) {
+        (_travelRuleServiceData,_vaspCode) = abi.decode(_encodedData,(bytes32, string));
     }
 
     function setCustomer (address _address) public onlyRegisterd {
-        registerdCustomer[_address]=true;
+        registerdCustomer[_address] = true;
     }
 
     function register (address _address) public onlyOwner {
-        travelRuleRegistry[_address]=true;
+        travelRuleRegistry[_address] = true;
     }
 
-    function getTravelRuleServiceData (address _contractAddress, uint256 _tokenID, address _travelRuleSolutionAddress) public view returns(bytes32) {
-        return travelRuleServiceData[_contractAddress][_tokenID][_travelRuleSolutionAddress];
+    function getTravelRuleServiceData (
+        address _contractAddress,
+        uint256 _tokenID,
+        address _customerAddress
+        ) public view returns(bytes memory) {
+        return travelRuleServiceData[_contractAddress][_tokenID][_customerAddress];
     }
 
     function isRegistered (address _address) public view returns(bool) {
@@ -40,10 +58,6 @@ contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
     }
 
     function isRegisteredCustomer (address _address) public view returns(bool) {
-        console.log(_address);
-                console.log(registerdCustomer[_address]);
-
         return registerdCustomer[_address];
     }
 }
-

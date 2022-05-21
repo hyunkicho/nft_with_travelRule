@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract TravelRuleSolutionExample is Ownable { //Extension 자체로 활용 여부.
     mapping (address => bytes32) private vaspCode;
     mapping (uint256 => address) private vaspID;
-    mapping (address => UserInfo) public UserInformation; 
+    mapping (address => UserInfo) public UserInformation;
 
     enum UserType { NATURAL, LEGAL }
 
@@ -31,9 +31,9 @@ contract TravelRuleSolutionExample is Ownable { //Extension 자체로 활용 여
         bytes32 _user_address,
         bytes32 _datesAndPlacOfBirth,
         bytes32 _nationalIdentification
-    ) 
+    )
     public onlyOwner {
-        
+
         UserInfo memory userInfo;
         userInfo.userCode = _userCode;
         userInfo.userType = _userType;
