@@ -10,19 +10,22 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract TravelRuleNft is Ownable ,ERC721TravelRuleExtension {
      using Strings for uint256;
-
+     string private _tokenUri;
+     string private _baseUri;
     constructor(
         string memory name,
         string memory symbol,
-        string memory _baseUri,
+        string memory baseUri,
         address _travelRuleManager
     )
     ERC721TravelRuleExtension(_travelRuleManager)
     ERC721(name, symbol)
     {
-        _tokenUri = _baseUri;
+        _baseUri = baseUri;
     }
-
+    function _baseURI() internal view virtual override returns (string memory) {
+        return _baseUri;
+    }
     function mint(address user, uint256 tokenId) public onlyOwner {
         _mint(user, tokenId);
         _setTokenURI(tokenId, tokenURI(tokenId));
