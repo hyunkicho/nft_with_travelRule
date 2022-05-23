@@ -1,46 +1,163 @@
-# Advanced Sample Hardhat Project
+본 저장소는 서강대학교 정보통신대학 블록체인학과 졸업 논문
+"ERC721 표준 NFT에 FATF의 트레블룰을 적용하는 방안에 대한 연구"
+에 대한 실제 코드 입니다.
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+1. 모듈 설치
+```
+npm install
+```
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
+2. 테스트 진행
+```
 npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.ts
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
 ```
 
-# Etherscan verification
+테스트 결과값
+```
+hyunkicho@Hyunkiui-MacBookPro nft_with_travelRule % npx hardhat test
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
+  Starting test with constants
+    ✓ start all the test
 
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
+  Starting test with constants
+    ✓ start erc721 test
 
-```shell
-hardhat run --network ropsten scripts/deploy.ts
+  deploy TravelRuleManager
+    ✓ Should Deploy TravelRuleManager correctly
+
+  deploy nftExample
+    ✓ Should Deploy TravelRuleNft correctly
+
+  deploy travleRuleSolutionExample
+    ✓ Should Deploy travelRuleSolutionExample_1 correctly
+
+  deploy travleRuleSolutionExample_2
+    ✓ Should Deploy travelRuleSolutionExample_2 correctly
+
+  Travel rule service must register their address to Travel Rule manager
+    ✓ register from_vasp to TravelRuleManager
+    ✓ TravelRuleManager Must be registerd
+    ✓ register to_vasp to TravelRuleManager
+    ✓ TravelRuleManager Must be registerd
+
+  Travel Rule manage can register 
+    ✓ register from_customer to TravelRuleManager
+    ✓ TravelRuleManager Must be registerd
+    ✓ register to_customer to TravelRuleManager
+    ✓ TravelRuleManager Must be registerd
+
+  mint example NFT to from_customer
+    ✓ mint NFT example
+    ✓ owner must be correct
+
+  [update from_customer info]If travelRule service have on chian system it should contain updateInfromation
+    ✓ register setTravelRuleServiceData to TravelRuleManager
+get from_customer data >>>>>>>>>>>>> [
+  '0x18d335cad98867f18347fd0350cf8f6e91a42884a9e51983533e9833ef1c8b8a',
+  '0x10a5ba217f6b440535520478051b9ff4b393b94a8a1145c46b7b5c0acd14e1e0',
+  '0x3661ea5828fe37bb18bb5bf4ffd4a17c301e7555b4644cfa92a9ae4a80d97e4e',
+  '0xf687450d69a609f17988f7cdb8ec1b53a7adffda29c349da6d1a02415844adad',
+  '0x199e9bde300d1a68f79de2d919bbe08e99725d5c3f2513d7717d2e430eaa9b60',
+  '0x4001584328913bf34665a46a4e1ec8d01e784970586409d80adb3ab31de2dcad',
+  '0x406eeac6c4edd3398b7d810f87407ca4587b9bc9b4a44bad12a5b8809c70ed13',
+  userCode: '0x18d335cad98867f18347fd0350cf8f6e91a42884a9e51983533e9833ef1c8b8a',
+  userType: '0x10a5ba217f6b440535520478051b9ff4b393b94a8a1145c46b7b5c0acd14e1e0',
+  name: '0x3661ea5828fe37bb18bb5bf4ffd4a17c301e7555b4644cfa92a9ae4a80d97e4e',
+  nameID: '0xf687450d69a609f17988f7cdb8ec1b53a7adffda29c349da6d1a02415844adad',
+  user_address: '0x199e9bde300d1a68f79de2d919bbe08e99725d5c3f2513d7717d2e430eaa9b60',
+  datesAndPlacOfBirth: '0x4001584328913bf34665a46a4e1ec8d01e784970586409d80adb3ab31de2dcad',
+  NationalIdentification: '0x406eeac6c4edd3398b7d810f87407ca4587b9bc9b4a44bad12a5b8809c70ed13'
+]
+    ✓ check travle rule service data
+
+  [update to_vasp info]If travelRule service have on chian system it should contain updateInfromation
+    ✓ setTravelRuleServiceData of from_customer to TravelRuleManager
+    ✓ setTravelRuleServiceData of to_customer TravelRuleManager_2
+get to_vasp data >>>>>>>>>>>>> [
+  '0xb5403aad7f2d010a5bfec2b28cd932ee77d47bbfb70a6e515ad4557640e43303',
+  '0x10a5ba217f6b440535520478051b9ff4b393b94a8a1145c46b7b5c0acd14e1e0',
+  '0x538385f7ef30cfb93f56d8630c58b37a41469631ad5139bcc5ef72a0682d3681',
+  '0xf687450d69a609f17988f7cdb8ec1b53a7adffda29c349da6d1a02415844adad',
+  '0xb2e62219e7a38e08a9410b830e7065839ba0149ac43232f4b389f501cd479349',
+  '0xa486c3305ec7796c778cbb2b34741f1fd4741e28b0e7b70a9e926ec9143a8213',
+  '0x2e312c26237f0bdc92c37ea7bdcffc6ca22ce1b223ea08ba8982cbbf0f9dc78c',
+  userCode: '0xb5403aad7f2d010a5bfec2b28cd932ee77d47bbfb70a6e515ad4557640e43303',
+  userType: '0x10a5ba217f6b440535520478051b9ff4b393b94a8a1145c46b7b5c0acd14e1e0',
+  name: '0x538385f7ef30cfb93f56d8630c58b37a41469631ad5139bcc5ef72a0682d3681',
+  nameID: '0xf687450d69a609f17988f7cdb8ec1b53a7adffda29c349da6d1a02415844adad',
+  user_address: '0xb2e62219e7a38e08a9410b830e7065839ba0149ac43232f4b389f501cd479349',
+  datesAndPlacOfBirth: '0xa486c3305ec7796c778cbb2b34741f1fd4741e28b0e7b70a9e926ec9143a8213',
+  NationalIdentification: '0x2e312c26237f0bdc92c37ea7bdcffc6ca22ce1b223ea08ba8982cbbf0f9dc78c'
+]
+    ✓ check travle rule service data
+
+  Travel rule service could set Travel Rule Service Data if they want
+    ✓ setTravelRuleServiceData to TravelRuleManager with vasp code
+    ✓ check if travel rule log is recorded
+[
+  '0x9dabb3f2ba8de1baeaed004a4879be78b7569efb83cd36e9cefd856b3f5a5184',
+  'SDFSES123',
+  _travelRuleServiceData: '0x9dabb3f2ba8de1baeaed004a4879be78b7569efb83cd36e9cefd856b3f5a5184',
+  _vaspCode: 'SDFSES123'
+]
+    ✓ travle rule log can be decoded back, check with from data
+[
+  '0xf2f17143fb0ec2105350af228a93fef9c58e9085cc4d351a120e9eb47b6c79fd',
+  'RQGQR12313',
+  _travelRuleServiceData: '0xf2f17143fb0ec2105350af228a93fef9c58e9085cc4d351a120e9eb47b6c79fd',
+  _vaspCode: 'RQGQR12313'
+]
+    ✓ travle rule log can be decoded back, check with to data
+
+  deploy ERC721
+    ✓ Should Deploy ERC721 correctly
+
+  mint example NFT to from_customer
+    ✓ mint NFT example
+    ✓ owner must be correct
+    ✓ transferFrom NFT example
+    ✓ owner must be correct
+
+·----------------------------------------------------------|----------------------------|-------------|-----------------------------·
+|                   Solc version: 0.8.4                    ·  Optimizer enabled: false  ·  Runs: 200  ·  Block limit: 30000000 gas  │
+···························································|····························|·············|······························
+|  Methods                                                                                                                          │
+······························|····························|··············|·············|·············|···············|··············
+|  Contract                   ·  Method                    ·  Min         ·  Max        ·  Avg        ·  # calls      ·  usd (avg)  │
+······························|····························|··············|·············|·············|···············|··············
+|  ERC721Example              ·  mint                      ·           -  ·          -  ·     150762  ·            1  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  ERC721Example              ·  transferFrom              ·           -  ·          -  ·      58657  ·            1  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleManager          ·  register                  ·       46395  ·      46407  ·      46401  ·            2  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleManager          ·  setCustomer               ·           -  ·          -  ·      46492  ·            2  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleManager          ·  setTravelRuleServiceData  ·      161462  ·     161486  ·     161474  ·            2  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleNft              ·  mint                      ·           -  ·          -  ·     150836  ·            1  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleNft              ·  transferFrom              ·           -  ·          -  ·     107139  ·            2  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleSolutionExample  ·  updateInfo                ·       56188  ·     184288  ·     141588  ·            3  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  Deployments                                             ·                                          ·  % of limit   ·             │
+···························································|··············|·············|·············|···············|··············
+|  ERC721Example                                           ·           -  ·          -  ·    2938188  ·        9.8 %  ·          -  │
+···························································|··············|·············|·············|···············|··············
+|  TravelRuleManager                                       ·           -  ·          -  ·    1099425  ·        3.7 %  ·          -  │
+···························································|··············|·············|·············|···············|··············
+|  TravelRuleNft                                           ·           -  ·          -  ·    3230099  ·       10.8 %  ·          -  │
+···························································|··············|·············|·············|···············|··············
+|  TravelRuleSolutionExample                               ·           -  ·          -  ·     644512  ·        2.1 %  ·          -  │
+·----------------------------------------------------------|--------------|-------------|-------------|---------------|-------------·
+
+  30 passing (3s)
 ```
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
-
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
+3. UML 생성 - 생성할 경로에 들어간 후 파일 지정하여 명령어 실행
+```
+sol2uml ./TravelRuleSolutionExample.sol
 ```
 
-# Performance optimizations
-
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
