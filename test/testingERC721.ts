@@ -16,13 +16,16 @@ describe("Starting test with constants", async () => {
   it("start erc721 test", async () => {
   // contracts
   let erc721: Contract;
+  let travelRuleNFT: Contract;
+  let travelRuleManager: Contract;
 
   //signers
   let owner: SignerWithAddress;
   let from: SignerWithAddress;
   let to: SignerWithAddress;
+  let example: SignerWithAddress
 
-  [owner, from, to] = await ethers.getSigners();
+  [owner, from, to, example] = await ethers.getSigners();
 
   //deploy TravelRuleManager and nft Example
 
@@ -49,6 +52,53 @@ describe("Starting test with constants", async () => {
 
       it("owner must be correct", async () => {
         expect(await erc721.ownerOf(1)).to.equal(to.address)
+      })
+    })
+
+    describe("burn example NFT to from_customer", async () => {
+      it("burn NFT example", async () => {
+        await erc721.connect(to).burn(1)
+      })
+    })
+
+    describe("deploy TravelRuleManager", async () => {
+      it("Should Deploy TravelRuleManager correctly", async () => {
+        const TravelRuleManagerFactory = await ethers.getContractFactory("TravelRuleManager");
+        travelRuleManager = await TravelRuleManagerFactory.deploy();
+        await travelRuleManager.deployed();
+      });
+    })
+
+    describe("deploy travelRuleNFT", async () => {
+      it("Should Deploy TravelRuleNft correctly", async () => {
+        const travelRuleNFTFactory = await ethers.getContractFactory("TravelRuleNft");
+        travelRuleNFT = await travelRuleNFTFactory.deploy(name,symbol,exampleERC721URI,travelRuleManager.address);
+        await travelRuleNFT.deployed();
+      });
+    })
+
+
+    describe("mint travelRuleNFT to from_customer", async () => {
+      it("mint travelRuleNFT example", async () => {
+        await travelRuleNFT.mint(from.address,1)
+      })
+
+      it("owner must be correct", async () => {
+        expect(await travelRuleNFT.ownerOf(1)).to.equal(from.address)
+      })
+
+      it("transferFrom NFT example", async () => {
+        await travelRuleNFT.connect(from).transferFrom(from.address,to.address,1)
+      })
+
+      it("owner must be correct", async () => {
+        expect(await travelRuleNFT.ownerOf(1)).to.equal(to.address)
+      })
+    })
+
+    describe("burn travelRuleNFT to from_customer", async () => {
+      it("burn travelRuleNFT example", async () => {
+        await travelRuleNFT.connect(to).burn(1)
       })
     })
   })
