@@ -139,28 +139,27 @@ describe("Starting test with constants", async () => {
       })
     })
 
-    describe("[update to_vasp info]If travelRule service have on chian system it should contain updateInfromation", async () => {
+    describe("[update from_customer's and to_customer's VASP info]", async () => {
 
-      it("setTravelRuleServiceData of from_customer to TravelRuleManager",async () => {
-        //user data
-        let userCode = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("AB34324"));
-        let userType = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("NATURAL"));
-        let name = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("cho hyun ki"));
-        let nameID = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("LEGL"));
-        let user_address = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("Gorgia"));
-        let NationalIdentification = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("234234-23432"));
-        let datesAndPlacOfBirth = await ethers.utils.keccak256(ethers.utils.toUtf8Bytes("938202"));
-        await travelRuleSolutionExample_1.updateInfo(
-          from_customer.address,
-          userCode,
-          userType,
-          name,
-          nameID,
-          user_address,
-          datesAndPlacOfBirth,
-          NationalIdentification
-        )
+      it("setVaspCode", async () => {
+        await travelRuleSolutionExample_1.setVaspCode("VASPCODE-EXAMPLE-A")
       })
+
+      it("getVaspCode", async () => {
+        expect(await travelRuleSolutionExample_1.getVaspCode(0)).to.equal("VASPCODE-EXAMPLE-A")
+      })
+
+      it("check travle rule service data", async () => {
+          await travelRuleSolutionExample_2.setVaspCode("VASPCODE-EXAMPLE-B")
+      })
+
+      it("getVaspCode", async () => {
+          expect(await travelRuleSolutionExample_2.getVaspCode(0)).to.equal("VASPCODE-EXAMPLE-B")
+      })  
+
+    })
+
+    describe("[update to_vasp info]If travelRule service have on chian system it should contain updateInfromation", async () => {
 
       it("setTravelRuleServiceData of to_customer TravelRuleManager_2",async () => {
         //user data
