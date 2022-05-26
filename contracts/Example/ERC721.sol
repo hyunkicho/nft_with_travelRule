@@ -26,10 +26,8 @@ contract ERC721Example is Ownable, ERC721URIStorage {
         _setTokenURI(tokenId, tokenURI(tokenId));
     }
 
-    function burn(uint256 tokenId) public onlyOwner {
+    function burn(uint256 tokenId) public {
         _setTokenURI(tokenId, "");
         _burn(tokenId);
     }
-
 }
-
