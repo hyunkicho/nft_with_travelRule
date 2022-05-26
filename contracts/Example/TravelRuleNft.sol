@@ -30,10 +30,8 @@ contract TravelRuleNft is Ownable ,ERC721TravelRuleExtension {
         _setTokenURI(tokenId, tokenURI(tokenId));
     }
 
-    function burn(uint256 tokenId) public onlyOwner {
+    function burn(uint256 tokenId) public {
         _setTokenURI(tokenId, "");
         _burn(tokenId);
     }
-
 }
-
