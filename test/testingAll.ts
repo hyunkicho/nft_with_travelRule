@@ -70,10 +70,18 @@ describe("Starting test with constants", async () => {
       it("TravelRuleManager Must be registerd", async () => {
         expect(await travelRuleManager.isRegistered(from_vasp.address)).to.be.true;
       })
+      
+      it("testing Only owner in TravelRuleManager",async () => {
+        await expect(travelRuleManager.connect(from_customer).register(to_vasp.address))
+        .to.be.revertedWith(
+          "Ownable: caller is not the owner"
+        )
+      })
 
       it("register to_vasp to TravelRuleManager",async () => {
         await travelRuleManager.register(to_vasp.address);
       })
+
 
       it("TravelRuleManager Must be registerd", async () => {
         expect(await travelRuleManager.isRegistered(to_vasp.address)).to.be.true;
@@ -91,6 +99,13 @@ describe("Starting test with constants", async () => {
 
       it("register to_customer to TravelRuleManager",async () => {
         await travelRuleManager.connect(to_vasp).setCustomer(to_customer.address);
+      })
+
+      it("testing Only registerd in TravelRuleManager",async () => {
+        await expect(travelRuleManager.setCustomer(to_customer.address))
+        .to.be.revertedWith(
+          "TravelRuleManager: caller must be a registered contract address"
+        )
       })
 
       it("TravelRuleManager Must be registerd", async () => {
