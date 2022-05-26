@@ -11,8 +11,6 @@ contract TravelRuleSolutionExample is Ownable { //Extension 자체로 활용 여
 
     uint public vaspIndex;
 
-    enum UserType { NATURAL, LEGAL }
-
     struct UserInfo {
         bytes32 userCode;
         bytes32 userType;
