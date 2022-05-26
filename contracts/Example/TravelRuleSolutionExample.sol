@@ -6,9 +6,10 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract TravelRuleSolutionExample is Ownable { //Extension 자체로 활용 여부.
-    mapping (address => bytes32) private vaspCode;
-    mapping (uint256 => address) private vaspID;
+    mapping (uint256 => string) private vaspCode;
     mapping (address => UserInfo) public UserInformation;
+
+    uint public vaspIndex;
 
     enum UserType { NATURAL, LEGAL }
 
@@ -46,13 +47,13 @@ contract TravelRuleSolutionExample is Ownable { //Extension 자체로 활용 여
         UserInformation[userAddress] = userInfo;
     }
 
-    function getVaspCode (address _address) public view returns(bytes32) {
-        return vaspCode[_address];
+    function setVaspCode (string memory _vaspCode) public onlyOwner {
+        vaspCode[vaspIndex] = _vaspCode;
+        vaspIndex++;
     }
 
-    function getVaspID (uint256 _index) public view returns(address) {
-        return vaspID[_index];
+    function getVaspCode (uint256 _vaspIndex) public view returns(string memory) {
+        return vaspCode[_vaspIndex];
     }
-
 }
 
