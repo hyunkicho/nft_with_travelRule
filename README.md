@@ -160,4 +160,7 @@ get to_vasp data >>>>>>>>>>>>> [
 ```
 sol2uml ./TravelRuleSolutionExample.sol
 ```
-
+4. 테스트 코드 커버리지 확인
+```
+npx hardhat coverage
+```
