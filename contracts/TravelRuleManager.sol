@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "hardhat/console.sol";
 
 contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
-    mapping (address => mapping(uint256 => mapping(address => bytes))) private travelRuleServiceData; 
+    mapping (address => mapping(uint256 => mapping(address => mapping(uint256 => bytes)))) private travelRuleServiceData; 
     //1st address  is contract address
     //2nd uint256 is tokenId
     //3rd address is travelruleSolutionAddress
@@ -13,6 +13,7 @@ contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
 
     mapping (address => bool) private travelRuleRegistry; //address is TravelRuleSoultion Example
     mapping (address => bool) private registerdCustomer;
+    mapping (address => uint256) public customerNonce;
 
     uint256 private txIndex;
 
@@ -29,8 +30,10 @@ contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
         string memory _vaspCode
         ) public onlyRegisterd {
         registerdCustomer[msg.sender] = true;
+        customerNonce[_customerAddress]= customerNonce[_customerAddress]+1;
+        uint256 _customerNonce = customerNonce[_customerAddress];
         bytes memory encodedData = abi.encode(_travelRuleServiceData,_vaspCode);
-        travelRuleServiceData[_contractAddress][_tokenID][_customerAddress] = encodedData;
+        travelRuleServiceData[_contractAddress][_tokenID][_customerAddress][_customerNonce] = encodedData;
     }
 
     function decodeDataAndVaspCode (bytes memory _encodedData) public view returns(bytes32 _travelRuleServiceData,string memory _vaspCode) {
@@ -50,7 +53,8 @@ contract TravelRuleManager is Ownable{ //Extension 자체로 활용 여부.
         uint256 _tokenID,
         address _customerAddress
         ) public view returns(bytes memory) {
-        return travelRuleServiceData[_contractAddress][_tokenID][_customerAddress];
+        uint256 _customerNonce = customerNonce[_customerAddress];
+        return travelRuleServiceData[_contractAddress][_tokenID][_customerAddress][_customerNonce];
     }
 
     function isRegistered (address _address) public view returns(bool) {
