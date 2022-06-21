@@ -337,3 +337,72 @@ File                            |  % Stmts | % Branch |  % Funcs |  % Lines |Unc
 All files                       |      100 |       80 |    95.45 |      100 |                |
 --------------------------------|----------|----------|----------|----------|----------------|
 ```
+
+5. 1000명에 대한 테스트 진행 결과
+```
+npx hardhat test
+```
+hyunkicho@Hyunkiui-MacBookPro nft_with_travelRule % npx hardhat test
+
+  Starting test with constants
+    ✓ start all the test
+
+  deploy TravelRuleManager
+    ✓ Should Deploy TravelRuleManager correctly
+
+  deploy nftExample
+    ✓ Should Deploy TravelRuleNft correctly
+
+  deploy travleRuleSolutionExample
+    ✓ Should Deploy travelRuleSolutionExample correctly
+
+  Travel rule service must register their address to Travel Rule manager
+    ✓ register from_vasp to TravelRuleManager
+    ✓ TravelRuleManager Must be registerd
+    ✓ register to_vasp to TravelRuleManager
+    ✓ TravelRuleManager Must be registerd
+
+  Test 1000 times to prove solution is working
+    ✓ register user mock data to TravelRuelManager 0-100
+    ✓ register user mock data to TravelRuelManager 101-200
+    ✓ register user mock data to TravelRuelManager 201-300
+    ✓ register user mock data to TravelRuelManager 301-400
+    ✓ register user mock data to TravelRuelManager 401-500
+    ✓ register user mock data to TravelRuelManager 501-600
+    ✓ register user mock data to TravelRuelManager 601-700
+    ✓ register user mock data to TravelRuelManager 701-800
+    ✓ register user mock data to TravelRuelManager 801-900
+    ✓ register user mock data to TravelRuelManager 901-1000
+
+·----------------------------------------------------------|----------------------------|-------------|-----------------------------·
+|                   Solc version: 0.8.4                    ·  Optimizer enabled: false  ·  Runs: 200  ·  Block limit: 30000000 gas  │
+···························································|····························|·············|······························
+|  Methods                                                                                                                          │
+······························|····························|··············|·············|·············|···············|··············
+|  Contract                   ·  Method                    ·  Min         ·  Max        ·  Avg        ·  # calls      ·  usd (avg)  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleManager          ·  register                  ·       46395  ·      46407  ·      46401  ·            2  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleManager          ·  setCustomer               ·       26592  ·      46492  ·      26612  ·         2020  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleManager          ·  setTravelRuleServiceData  ·      147219  ·     184243  ·     147284  ·         2020  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleNft              ·  mint                      ·      149404  ·     154571  ·     153302  ·         1010  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleNft              ·  transferFrom              ·       94601  ·     111689  ·      94627  ·         2020  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleSolutionExample  ·  setVaspCode               ·       52741  ·      69841  ·      52758  ·         1010  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  TravelRuleSolutionExample  ·  updateInfo                ·       56232  ·     184332  ·      59146  ·         1010  ·          -  │
+······························|····························|··············|·············|·············|···············|··············
+|  Deployments                                             ·                                          ·  % of limit   ·             │
+···························································|··············|·············|·············|···············|··············
+|  TravelRuleManager                                       ·           -  ·          -  ·    1222712  ·        4.1 %  ·          -  │
+···························································|··············|·············|·············|···············|··············
+|  TravelRuleNft                                           ·           -  ·          -  ·    3203620  ·       10.7 %  ·          -  │
+···························································|··············|·············|·············|···············|··············
+|  TravelRuleSolutionExample                               ·           -  ·          -  ·     898332  ·          3 %  ·          -  │
+·----------------------------------------------------------|--------------|-------------|-------------|---------------|-------------·
+
+  18 passing (2m)
+```
